@@ -54,23 +54,36 @@ class Planner:
         """ Creates a new task and adds it to the planner"""
         self.planner.append(Task(name, dueDate))
 
-    def modify_name(self, task_id, name):
-        """ Use the ID to find a task and then change its name"""
+    def _find_task(self, task_id):
+        """ Find the note with the given ID"""
         for task in self.planner:
-            if task.id == task_id: # if the task ID matched the designated ID
-                task.name = name
+            if str(task.id) == str(task_id):
+                return task
+        return None
+
+    def modify_name(self, task_id, name):
+        """ Use the ID to find a task and then change its name if given"""
+        task = self._find_task(task_id) # sees if there is a task with the ID
+        if task: # if it exists
+            task.name = name # modify the name
+            return True
+        return False # if not show an error message
 
     def modify_dueDate(self, task_id, dueDate):
-        """ Use the ID to find a task and change its due date"""
-        for task in self.planner:
-            if task.id == task_id:
-                task.dueDate == dueDate
+        """ Use the ID to find a task and change its due date if given"""
+        task = self._find_task(task_id)
+        if task:
+            task.dueDate = dueDate
+            return True
+        return False
 
     def modify_isComplete(self, task_id, isComplete):
         """ Use the task ID to find a task and change if it is complete or not"""
-        for task in self.planer:
-            if task.id == task_id:
-                task.isComplete == isComplete
+        task = self._find_task(task_id)
+        if task:
+            task.isComplete = isComplete
+            return True
+        return False
 
     def search(self, filter):
         """ Find all of the tasks that match the filter"""
